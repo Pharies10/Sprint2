@@ -35,6 +35,15 @@ public class Node implements Serializable
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+
 	// empty constructor for XML
 	public Node() throws RemoteException
 	{
