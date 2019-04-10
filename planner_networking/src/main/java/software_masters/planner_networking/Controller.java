@@ -5,6 +5,8 @@ package software_masters.planner_networking;
 
 import java.rmi.RemoteException;
 
+import javafx.scene.control.TreeItem;
+
 /**
  * @author pharies
  *
@@ -39,7 +41,7 @@ public class Controller
 
 	public void addBranch(Node node) throws RemoteException, IllegalArgumentException
 	{
-		System.out.println("hello");
+		
 		Plan plan = client.getCurrPlanFile().getPlan();
 		plan.addNode(node);
 		
@@ -48,6 +50,19 @@ public class Controller
 		view.setTree();
 		
 	}
+	
+	public void removeBranch(Node node) throws RemoteException, IllegalArgumentException
+	{
+		System.out.println("hello");
+		Plan plan = client.getCurrPlanFile().getPlan();
+		plan.removeNode(node);
+		
+		client.getCurrPlanFile().setPlan(plan);
+		
+		view.setTree();
+		
+	}
+	
 	
 	
 	public Plan getPlan()
@@ -93,5 +108,6 @@ public class Controller
 	{
 		this.view = view;
 	}
+
 
 }

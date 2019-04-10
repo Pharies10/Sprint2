@@ -12,10 +12,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
+//import ButtonFXtest.Test_fx.Node;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
@@ -25,9 +28,9 @@ import javafx.stage.Stage;
 public class editView extends Application 
 {
 	
+	String info;
 	
-	
-	
+	TextField text;
 	//Layer 1 right side
 	VBox btnHolder;
 	Button addBtn;
@@ -43,7 +46,7 @@ public class editView extends Application
 	
 	//Layer 1 left side
 	VBox tree;
-	TreeView treeView;
+	TreeView<TreeItem> treeView;
 	//Layer 1 Center bar
 	BorderPane data;
 	// add text boxes for data ... online research
@@ -51,7 +54,7 @@ public class editView extends Application
 	// Layer 0
 	BorderPane backing;
 	
-	Plan plan;
+
 	
 	Stage stage;
 	
@@ -91,7 +94,20 @@ public class editView extends Application
 			}
 		});
     	removeBtn = new Button("Remove Branch");
-    	removeBtn.setOnAction(e -> removeBranch());
+    	removeBtn.setOnAction(e -> {
+			try
+			{
+				removeBranch();
+			} catch (RemoteException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalArgumentException e1)
+			{
+				// TODO Auto-generated catch block
+				System.out.println("cannont remove node");
+			}
+		});
     	saveBtn = new Button("Save Plan");
     	btnHolder = new VBox(addBtn, removeBtn, saveBtn);
     	
@@ -167,9 +183,32 @@ public class editView extends Application
         tree.getChildren().add(treeView); 
     	backing.setLeft(tree);
     	
+		text = new TextField();
+
+		treeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() 
+		{
+			   @SuppressWarnings("unchecked")
+			public void changed(ObservableValue observable, Object oldValue,
+		                Object newValue) {
+
+				   text.setPromptText(((TreeItem<Node>) newValue).getValue().getData());
+				   System.out.println(text.getText());
+				   text.setOnAction(e -> save(treeView.getSelectionModel().getSelectedItem()));        
+					       
+					    }
+			
+				
+		            
+		            //System.out.println("textfield changed from  to " +  ((TreeItem<Node>) newValue).getValue().getData()));
+
+		});
+		
+		backing.setCenter(text);
+    	
     }
 
 
+   
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
@@ -181,6 +220,11 @@ public class editView extends Application
         c.setView(this);
     	PlanFile file = new PlanFile();
     	Plan test = new VMOSA();
+		Node rootNode = test.getRoot();
+		Node missionNode = rootNode.getChildren().get(0);
+		Node objNode = missionNode.getChildren().get(0);
+		rootNode.setData("hello");
+		objNode.setData("his");
     	file.setPlan(test);
     	client.setCurrPlanFile(file);
     	
@@ -192,8 +236,13 @@ public class editView extends Application
 		//VBox treeBtn = buildLeft();
 		setTree();
         
+	  	
+
+		
+		
         backing.setLeft(tree);
-        backing.setCenter(data);
+        backing.setCenter(text);
+  
         backing.setRight(btnHolder);
         backing.setTop(topBar);
         Scene scene = new Scene(backing,900,400);
@@ -210,19 +259,23 @@ public class editView extends Application
 	
 	private void addBranch() throws RemoteException
 	{
-		TreeItem parent = treeView.getSelectedItem();
+		TreeItem parent = treeView.getSelectionModel().getSelectedItem();
+		Node node = (Node) parent.getValue();
+		
+		c.addBranch(node);
 		
 		
-		c.addBranch(null);
 		
-		setTree();
-
 		
 	}
 	
-	private void removeBranch()
+	
+	private void removeBranch() throws RemoteException, IllegalArgumentException
 	{
+		TreeItem parent = treeView.getSelectionModel().getSelectedItem();
+		Node node = (Node) parent.getValue();
 		
+		c.removeBranch(node);
 		
 		
 	}
@@ -243,6 +296,23 @@ public class editView extends Application
 	public void setC(Controller c)
 	{
 		this.c = c;
+	}
+	private void save(TreeItem item)
+	{
+		
+		Node node = (Node) item.getValue();
+		node.setData(text.getText());
+		try
+		{
+			this.setTree();
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 	
 	
