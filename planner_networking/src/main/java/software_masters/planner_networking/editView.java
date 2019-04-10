@@ -231,11 +231,7 @@ public class editView extends Application
         c.setView(this);
     	PlanFile file = new PlanFile();
     	Plan test = new VMOSA();
-		Node rootNode = test.getRoot();
-		Node missionNode = rootNode.getChildren().get(0);
-		Node objNode = missionNode.getChildren().get(0);
-		rootNode.setData("hello");
-		objNode.setData("his");
+
     	file.setPlan(test);
     	client.setCurrPlanFile(file);
     	
@@ -244,7 +240,7 @@ public class editView extends Application
 		topBar = buildTop();
 		data = new BorderPane();
 		backing = new BorderPane();
-		//VBox treeBtn = buildLeft();
+		
 		setTree();
         
 	  	
