@@ -1,6 +1,10 @@
-This is our design document:
+This is our design document for Sprint 1/2:
 https://docs.google.com/document/d/1usWl9l82Wa1OelQTavswDzb6ZTNx1EhyaA9iFIS7zCY/edit?usp=sharing
 
+This is the design doc for Sprint 3:
+https://docs.google.com/document/d/1VqBu7j2Acryq4OLy6N0jFRVF2AuAzYy0wl2eBu2--BE/edit?usp=sharing
+
+For Sprint 2:
 Testing Notes:
 If running client and server on the same machine:
 - LocalTestSuite
@@ -8,3 +12,7 @@ If running server and client on separate machines:
 1. Run ServerImplementation. This can be done in eclipse. The main method automatically generates RMI registry.
 2. Edit RemoteClientTest setUpBeforeClass method. You will need to change the hostname to whatever machine is running the server. Verify the ports are the same. 
 3. Run RemoteTestSuite
+
+
+For Sprint 3 Testing:
+https://docs.google.com/document/d/1skgRdM6JkrWETGdZjIXcNluK14BZYMBbJ5tgrJMugMA/edit?usp=sharing
