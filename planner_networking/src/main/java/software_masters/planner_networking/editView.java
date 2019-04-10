@@ -24,7 +24,16 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * Client and Controller and initialized in start
+ * will need to be changed upon addition of new scenes
+ * to change text you have to press enter
+ * see manual test document for further instructions
+ * 
+ * 
+ * 
+ */
 public class editView extends Application 
 {
 	
@@ -75,13 +84,15 @@ public class editView extends Application
    	}
 	
     /**
-     * 
+     * builds and sets actions to buttons that go on right side of Gui
      * 
      * @return vbox on  right side 
      */
     private VBox buildRight()
     {
-
+    	
+    	
+    	//set add action
     	addBtn = new Button("Add Branch");
     	addBtn.setOnAction(e -> {
 			try
@@ -93,6 +104,9 @@ public class editView extends Application
 				e1.printStackTrace();
 			}
 		});
+    	
+    	
+    	// set remove action
     	removeBtn = new Button("Remove Branch");
     	removeBtn.setOnAction(e -> {
 			try
@@ -108,35 +122,22 @@ public class editView extends Application
 				System.out.println("cannont remove node");
 			}
 		});
+    	
+    	// set save action
     	saveBtn = new Button("Save Plan");
     	btnHolder = new VBox(addBtn, removeBtn, saveBtn);
     	
     	return btnHolder;
     }
     
-    
-    private VBox buildLeft()
-    {
 
-    	Button treeBtn = new Button("Add tree");
-    	treeBtn.setOnAction(e -> {
-			try
-			{
-				this.setTree();
-			} catch (RemoteException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
-
-
-    	tree = new VBox(treeBtn);
-    	
-    	return tree;
-    }
     
-    
+    /**
+     * sets the tops buttons
+     * since no need for logout and Home the buttons are not set for action
+     * needs to be added to upon further development
+     * @return
+     */
     private BorderPane buildTop()
     {
     	
@@ -155,7 +156,7 @@ public class editView extends Application
     
     /**
      * 
-     * Controller will use setTree to 
+     * sets the tree and the text box to the latest version of tree
      * 
      * 
      * @param plan
@@ -256,7 +257,12 @@ public class editView extends Application
 		
 	}
 	
-	
+	/**
+	 * action called when add branch
+	 * sends it to controller to handle
+	 * 
+	 * @throws RemoteException
+	 */
 	private void addBranch() throws RemoteException
 	{
 		TreeItem parent = treeView.getSelectionModel().getSelectedItem();
@@ -269,7 +275,12 @@ public class editView extends Application
 		
 	}
 	
-	
+	/**
+	 * action called when remove branch
+	 * sends it to controller to handle
+	 * 
+	 * @throws RemoteException
+	 */
 	private void removeBranch() throws RemoteException, IllegalArgumentException
 	{
 		TreeItem parent = treeView.getSelectionModel().getSelectedItem();
@@ -297,6 +308,13 @@ public class editView extends Application
 	{
 		this.c = c;
 	}
+	
+	/**
+	 * action called when text changes and return key pressed
+	 * sets node data
+	 * 
+	 * @param item
+	 */
 	private void save(TreeItem item)
 	{
 		
