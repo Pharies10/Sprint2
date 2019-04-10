@@ -125,6 +125,16 @@ public class editView extends Application
     	
     	// set save action
     	saveBtn = new Button("Save Plan");
+    	saveBtn.setOnAction(e -> {
+			try
+			{
+				update();
+			} catch (IllegalArgumentException | RemoteException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
     	btnHolder = new VBox(addBtn, removeBtn, saveBtn);
     	
     	return btnHolder;
@@ -290,7 +300,26 @@ public class editView extends Application
 		
 		
 	}
-
+	
+	
+	
+	
+	/**
+	 * 
+	 * action called when save plan
+	 * update plan 
+	 * 
+	 * @throws IllegalArgumentException
+	 * @throws RemoteException
+	 */
+	private void update() throws IllegalArgumentException, RemoteException
+	{
+		c.update();
+		
+		
+		
+		
+	}
 
 	/**
 	 * @return the c

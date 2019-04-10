@@ -141,5 +141,16 @@ public class Controller
 		this.view = view;
 	}
 
+	/**
+	 * calls the pushPlan in client
+	 * @throws IllegalArgumentException
+	 * @throws RemoteException
+	 */
+	public void update() throws IllegalArgumentException, RemoteException
+	{
+		client.pushPlan(client.getCurrPlanFile());
+		
+	}
+
 
 }
