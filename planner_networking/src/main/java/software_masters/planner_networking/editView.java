@@ -43,7 +43,7 @@ public class editView extends Application
 	
 	//Layer 1 left side
 	VBox tree;
-	
+	TreeView treeView;
 	//Layer 1 Center bar
 	BorderPane data;
 	// add text boxes for data ... online research
@@ -55,10 +55,22 @@ public class editView extends Application
 	
 	Stage stage;
 	
-    public static void main( String[] args )
+	
+	public Client client;
+	public Controller c;
+	
+    public editView(Controller c)
     {
-        launch(args);
-    }
+    	this.c = c;
+       
+   	}
+
+    public editView()
+    {
+    
+       
+   	}
+	
     /**
      * 
      * 
@@ -66,6 +78,7 @@ public class editView extends Application
      */
     private VBox buildRight()
     {
+
     	addBtn = new Button("Add Branch");
     	addBtn.setOnAction(e -> {
 			try
@@ -78,11 +91,35 @@ public class editView extends Application
 			}
 		});
     	removeBtn = new Button("Remove Branch");
+    	removeBtn.setOnAction(e -> removeBranch());
     	saveBtn = new Button("Save Plan");
     	btnHolder = new VBox(addBtn, removeBtn, saveBtn);
     	
     	return btnHolder;
     }
+    
+    
+    private VBox buildLeft()
+    {
+
+    	Button treeBtn = new Button("Add tree");
+    	treeBtn.setOnAction(e -> {
+			try
+			{
+				this.setTree();
+			} catch (RemoteException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+
+
+    	tree = new VBox(treeBtn);
+    	
+    	return tree;
+    }
+    
     
     private BorderPane buildTop()
     {
@@ -111,16 +148,14 @@ public class editView extends Application
      */
     
     
-    public void setTree(Plan plan) throws RemoteException
+    public void setTree() throws RemoteException
     {
     	
-
-		
-		
+    	Plan plan = c.getPlan();
 		
 		
     	treeHelper helper = new treeHelper();
-        TreeView treeView = new TreeView();
+        treeView = new TreeView();
         TreeItem rootItem = helper.makeTree(plan.getRoot());
         // Set the Root Node
 
@@ -140,18 +175,24 @@ public class editView extends Application
 	{
 		
 		stage = primaryStage;
-        plan = new VMOSA();
-
+        c = new Controller();
+        client = new Client(null);
+        c.setClient(client);
+        c.setView(this);
+    	PlanFile file = new PlanFile();
+    	Plan test = new VMOSA();
+    	file.setPlan(test);
+    	client.setCurrPlanFile(file);
+    	
 		
 		btnHolder = buildRight();
 		topBar = buildTop();
 		data = new BorderPane();
 		backing = new BorderPane();
-		
-		setTree(plan);
+		//VBox treeBtn = buildLeft();
+		setTree();
         
-        
-        
+        backing.setLeft(tree);
         backing.setCenter(data);
         backing.setRight(btnHolder);
         backing.setTop(topBar);
@@ -169,18 +210,41 @@ public class editView extends Application
 	
 	private void addBranch() throws RemoteException
 	{
-		
-		Node rootNode = plan.getRoot();
-		Node missionNode = rootNode.getChildren().get(0);
-		Node objNode = missionNode.getChildren().get(0);
-		plan.addNode(objNode);
-		
-		setTree(plan);
+		TreeItem parent = treeView.getSelectedItem();
 		
 		
+		c.addBranch(null);
+		
+		setTree();
+
+		
+	}
+	
+	private void removeBranch()
+	{
 		
 		
 		
 	}
+
+
+	/**
+	 * @return the c
+	 */
+	public Controller getC()
+	{
+		return c;
+	}
+
+
+	/**
+	 * @param c the c to set
+	 */
+	public void setC(Controller c)
+	{
+		this.c = c;
+	}
+	
+	
 }
 
