@@ -83,6 +83,10 @@ public class editView extends Application
        
    	}
 	
+    public static void main( String[] args )
+    {
+        launch(args);
+    }
     /**
      * builds and sets actions to buttons that go on right side of Gui
      * 
